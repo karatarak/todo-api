@@ -24,20 +24,11 @@ namespace Todo.Data
             return Task.FromResult(item);
         }
 
-        public Task<IList<ItemData>> GetByUserId(string userId)
+
+        public Task<IList<ItemData>> GetByBoardId(string userId, string boardId)
         {
             var items = (IList<ItemData>) _items
                 .Where(x => x.user_id == userId)
-                .OrderBy(x => x.due_date)
-                .ThenBy(x => x.created_date)
-                .ToList();
-
-            return Task.FromResult(items);
-        }
-
-        public Task<IList<ItemData>> GetByBoardId(string boardId)
-        {
-            var items = (IList<ItemData>) _items
                 .Where(x => x.board_id == boardId)
                 .OrderBy(x => x.due_date)
                 .ThenBy(x => x.created_date)

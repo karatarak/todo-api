@@ -58,28 +58,12 @@ namespace Todo.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ItemCollection> GetItemsByUserId(string user_id)
+        public async Task<ItemCollection> GetItems([FromQuery] string user_id, [FromQuery] string board_id)
         {
-            var items = await _itemsRepository.GetByUserId(user_id);
+            var items = await _itemsRepository.GetByBoardId(user_id, board_id);
+            
             return new ItemCollection {
-                items = items
-                    .OrderBy(x => x.due_date)
-                    .ThenBy(x => x.created_date)
-                    .Select(Map)
-                    .ToArray()
-            };
-        }
-
-        [HttpGet]
-        public async Task<ItemCollection> GetItemsByBoardId(string board_id)
-        {
-            var items = await _itemsRepository.GetByUserId(board_id);
-            return new ItemCollection {
-                items = items
-                    .OrderBy(x => x.due_date)
-                    .ThenBy(x => x.created_date)
-                    .Select(Map)
-                    .ToArray()
+                items = items.Select(Map).ToArray()
             };
         }
 
