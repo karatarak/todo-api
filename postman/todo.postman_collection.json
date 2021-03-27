@@ -1,0 +1,354 @@
+{
+	"info": {
+		"_postman_id": "cc2732e1-bf34-484c-8074-3ea77979eaba",
+		"name": "todo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get items for all boards",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var data = pm.response.json();\r",
+							"    if (data.items.length > 0) {\r",
+							"        pm.environment.set(\"last_item_id\", data.items[0].item_id);\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostname}}/api/v1/items?user_id=peter",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"items"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "peter"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get items for default board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var data = pm.response.json();\r",
+							"    if (data.items.length > 0) {\r",
+							"        pm.environment.set(\"last_item_id\", data.items[0].item_id);\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostname}}/api/v1/items?user_id=peter&board_id=default",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"items"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "peter"
+						},
+						{
+							"key": "board_id",
+							"value": "default"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get items for shopping board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var data = pm.response.json();\r",
+							"    if (data.items.length > 0) {\r",
+							"        pm.environment.set(\"last_item_id\", data.items[0].item_id);\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostname}}/api/v1/items?user_id=peter&board_id=shopping",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"items"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "peter"
+						},
+						{
+							"key": "board_id",
+							"value": "shopping"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create item on default board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var data = pm.response.json();\r",
+							"    pm.environment.set(\"last_item_id\", data.item_id);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"user_id\":\"peter\",\r\n\t\"title\":\"Feed the tiger\",\r\n    \"description\":\"Mr Snuggles is hungry!\",\r\n    \"status\":\"pending\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{hostname}}/api/v1/items",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create item on shopping board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var data = pm.response.json();\r",
+							"    pm.environment.set(\"last_item_id\", data.item_id);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"user_id\":\"peter\",\r\n    \"board_id\":\"shopping\",\r\n\t\"title\":\"Buy tiger food\",\r\n    \"status\":\"pending\",\r\n    \"due_date\":\"2021-04-01T10:10:10Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{hostname}}/api/v1/items",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create item on birthdays board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var data = pm.response.json();\r",
+							"    pm.environment.set(\"last_item_id\", data.item_id);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"user_id\":\"peter\",\r\n    \"board_id\":\"birthdays\",\r\n\t\"title\":\"Mum's birthday\",\r\n    \"description\":\"\",\r\n    \"status\":\"pending\",\r\n    \"due_date\":\"2021-11-07\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{hostname}}/api/v1/items",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"board_id\":\"birthdays\",\r\n\t\"title\":\"Dad's birthday\",\r\n    \"description\":\"Don't forget!\",\r\n    \"status\":\"pending\",\r\n    \"due_date\":\"2021-03-30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{hostname}}/api/v1/items/{{last_item_id}}",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"items",
+						"{{last_item_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.environment.unset(\"last_item_id\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostname}}/api/v1/items/{{last_item_id}}",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"items",
+						"{{last_item_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

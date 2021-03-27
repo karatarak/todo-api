@@ -38,7 +38,8 @@ namespace Todo.Data
             }
                 
             var items = (IList<ItemData>) itemsQuery
-                .OrderBy(x => x.due_date)
+                .OrderByDescending(p => p.due_date.HasValue)
+                .ThenBy(x => x.due_date)
                 .ThenBy(x => x.created_date)
                 .ToList();
 

@@ -67,10 +67,10 @@ namespace Todo.Api.Controllers
             };
         }
 
-        [HttpDelete("itemId:guid")]
-        public async Task DeleteItem(Guid itemId)
+        [HttpDelete("{item_id:guid}")]
+        public async Task DeleteItem(Guid item_id)
         {
-            await _itemsRepository.Delete(itemId);
+            await _itemsRepository.Delete(item_id);
         }
 
         private static Item Map(ItemData data)
