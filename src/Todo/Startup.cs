@@ -32,6 +32,7 @@ namespace Todo
                     options.JsonSerializerOptions.WriteIndented = true;
                 });
 
+            services.AddApiVersioning();
 
             services.AddSwaggerGen(c =>
             {
