@@ -8,7 +8,7 @@ namespace Todo.Data
     {
         Task<ItemData> GetById(Guid itemId);
 
-        Task<IList<ItemData>> GetByBoardId(string user_id, string boardId);
+        Task<IList<ItemData>> GetByUserId(string userId, string boardId);
 
         Task<ItemData> Insert(string userId, string boardId, string title, string description, string status, DateTime? dueDate);
         

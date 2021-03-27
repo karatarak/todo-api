@@ -60,7 +60,7 @@ namespace Todo.Api.Controllers
         [HttpGet]
         public async Task<ItemCollection> GetItems([FromQuery] string user_id, [FromQuery] string board_id)
         {
-            var items = await _itemsRepository.GetByBoardId(user_id, board_id);
+            var items = await _itemsRepository.GetByUserId(user_id, board_id);
             
             return new ItemCollection {
                 items = items.Select(Map).ToArray()

@@ -8,14 +8,16 @@ namespace Todo.Data
     public class ItemsRepository : IItemsRepository
     {
         private readonly IList<ItemData> _items = new List<ItemData>();
+        private static readonly string DefaultBoardId = "default";
 
         public ItemsRepository()
         {
             // Insert initial dataset
             var userId = "peter";
-            Insert(userId, null, "Feed the tiger", "Mr Snuggles is getting hungry", "pending", null).Wait();
-            Insert(userId, null, "Catch 20 Fish", "Level up my fishing skill", "pending", null).Wait();
-            Insert(userId, null, "Training with Mr Miyagi", "Working towards my white belt", "pending", null).Wait();
+
+            Insert(userId, DefaultBoardId, "Feed the tiger", "Mr Snuggles is getting hungry", "pending", null).Wait();
+            Insert(userId, DefaultBoardId, "Catch 20 Fish", "Level up my fishing skill", "pending", null).Wait();
+            Insert(userId, "Calendar", "Training with Mr Miyagi", "Working towards my white belt", "pending", null).Wait();
         }
 
         public Task<ItemData> GetById(Guid itemId)
@@ -25,11 +27,16 @@ namespace Todo.Data
         }
 
 
-        public Task<IList<ItemData>> GetByBoardId(string userId, string boardId)
+        public Task<IList<ItemData>> GetByUserId(string userId, string boardId)
         {
-            var items = (IList<ItemData>) _items
-                .Where(x => x.user_id == userId)
-                .Where(x => x.board_id == boardId)
+            var itemsQuery = _items.Where(x => x.user_id == userId);
+
+            if (boardId is not null)
+            {
+                itemsQuery = itemsQuery.Where(x => x.board_id == boardId);
+            }
+                
+            var items = (IList<ItemData>) itemsQuery
                 .OrderBy(x => x.due_date)
                 .ThenBy(x => x.created_date)
                 .ToList();
@@ -42,7 +49,7 @@ namespace Todo.Data
             var item = new ItemData {
                 item_id = Guid.NewGuid(),
                 user_id = userId,
-                board_id = boardId,
+                board_id = boardId ?? DefaultBoardId,
                 title = title,
                 description = description,
                 status = status,
@@ -61,7 +68,7 @@ namespace Todo.Data
             
             if (item is not null)
             {
-                item.board_id = boardId;
+                item.board_id = boardId ?? DefaultBoardId;
                 item.title = title.Trim();
                 item.description = description.Trim();
                 item.status = status.ToLowerInvariant().Trim();
