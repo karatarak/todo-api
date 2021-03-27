@@ -100,9 +100,9 @@ GET all items for the user 'peter'
 > http://localhost:5000/api/v1/items?user_id=peter
 
 GET all items for the user 'peter' on the board 'default'
-> http://localhost:5000/api/v1/items?user_id=peter?board_id=default
+> http://localhost:5000/api/v1/items?user_id=peter&board_id=default
 
-GET the item with the item_id '{{item_id}}'
+GET the item with the item_id '{{item_id}}' - You'll need to insert a valid item_id here.
 > http://localhost:5000/api/v1/items/{{item_id}}
 
 
