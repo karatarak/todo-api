@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Todo.Data;
 
 namespace Todo
 {
@@ -25,8 +26,12 @@ namespace Todo
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddControllers()
+            services.AddSingleton<IItemsRepository>(provider => 
+                {
+                    return new ItemsRepository();
+                });
+
+            services.AddControllers()
                 .AddJsonOptions(options => 
                 {
                     options.JsonSerializerOptions.WriteIndented = true;
@@ -35,9 +40,9 @@ namespace Todo
             services.AddApiVersioning();
 
             services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Todo", Version = "v1" });
-            });
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Todo", Version = "v1" });
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
