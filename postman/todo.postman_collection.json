@@ -6,6 +6,106 @@
 	},
 	"item": [
 		{
+			"name": "Get default board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{hostname}}/api/v1/boards/default?user_id=peter",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"boards",
+						"default"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "peter"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get shopping board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{hostname}}/api/v1/boards/shopping?user_id=peter",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"boards",
+						"shopping"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "peter"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get items for all boards",
 			"event": [
 				{
@@ -269,6 +369,50 @@
 						"api",
 						"v1",
 						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{hostname}}/api/v1/items/{{last_item_id}}",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"items",
+						"{{last_item_id}}"
 					]
 				}
 			},
