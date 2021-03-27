@@ -7,17 +7,18 @@ namespace Todo.Data
 {
     public class ItemsRepository : IItemsRepository
     {
+        public static readonly string DefaultUserId = "peter";
+        public static readonly string DefaultBoardId = "default";
+
         private readonly IList<ItemData> _items = new List<ItemData>();
-        private static readonly string DefaultBoardId = "default";
+        
 
         public ItemsRepository()
         {
             // Insert initial dataset
-            var userId = "peter";
-
-            Insert(userId, DefaultBoardId, "Feed the tiger", "Mr Snuggles is getting hungry", "pending", null).Wait();
-            Insert(userId, DefaultBoardId, "Catch 20 Fish", "Level up my fishing skill", "pending", null).Wait();
-            Insert(userId, "Calendar", "Training with Mr Miyagi", "Working towards my white belt", "pending", null).Wait();
+            Insert(DefaultUserId, DefaultBoardId, "Feed the tiger", "Mr Snuggles is getting hungry", "pending", null).Wait();
+            Insert(DefaultUserId, DefaultBoardId, "Catch 20 Fish", "Level up my fishing skill", "pending", null).Wait();
+            Insert(DefaultUserId, "calendar", "Training with Mr Miyagi", "Working towards my white belt", "pending", null).Wait();
         }
 
         public Task<ItemData> GetById(Guid itemId)
