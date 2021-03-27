@@ -17,8 +17,13 @@ namespace Todo.Data
         {
             // Insert initial dataset
             Insert(DefaultUserId, DefaultBoardId, "Feed the tiger", "Mr Snuggles is getting hungry", "pending", null).Wait();
-            Insert(DefaultUserId, DefaultBoardId, "Catch 20 Fish", "Level up my fishing skill", "pending", null).Wait();
-            Insert(DefaultUserId, "calendar", "Training with Mr Miyagi", "Working towards my white belt", "pending", null).Wait();
+            Insert(DefaultUserId, DefaultBoardId, "Catch 20 Fish", "Level up my fishing skill", "in_progress", DateTime.UtcNow.AddDays(1).Date).Wait();
+            Insert(DefaultUserId, DefaultBoardId, "Training with Mr Miyagi", "Working towards my white belt", "complete", DateTime.UtcNow.AddDays(2).Date).Wait();
+            Insert(DefaultUserId, "shopping", "Celery", null, "pending", DateTime.UtcNow.AddDays(2).Date).Wait();
+            Insert(DefaultUserId, "shopping", "Lettuce", null, "pending", DateTime.UtcNow.AddDays(3).Date).Wait();
+            Insert(DefaultUserId, "shopping", "Eggs", null, "purchased", DateTime.UtcNow.Date).Wait();
+            Insert(DefaultUserId, "shopping", "Nunchucks", null, "purchased", DateTime.UtcNow.Date).Wait();
+            Insert(DefaultUserId, "shopping", "Milk", null, "purchased", DateTime.UtcNow.AddDays(-1).Date).Wait();
         }
 
         public Task<ItemData> GetById(Guid itemId)

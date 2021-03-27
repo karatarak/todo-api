@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Todo.Data;
+using Todo.Model;
 
-namespace Todo.Api.Controllers
+namespace Todo.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
@@ -31,7 +32,7 @@ namespace Todo.Api.Controllers
                 body.status,
                 body.due_date);
 
-            return Map(item);
+            return Item.FromData(item);
         }
 
         [HttpPut("{item_id:guid}")]
@@ -54,7 +55,7 @@ namespace Todo.Api.Controllers
                 return NotFound();
             }
 
-            return Map(item);
+            return Item.FromData(item);
         }
 
         [HttpGet]
@@ -63,7 +64,7 @@ namespace Todo.Api.Controllers
             var items = await _itemsRepository.GetByUserId(user_id, board_id);
             
             return new ItemCollection {
-                items = items.Select(Map).ToArray()
+                items = items.Select(Item.FromData).ToArray()
             };
         }
 
@@ -71,20 +72,6 @@ namespace Todo.Api.Controllers
         public async Task DeleteItem(Guid item_id)
         {
             await _itemsRepository.Delete(item_id);
-        }
-
-        private static Item Map(ItemData data)
-        {
-            return new Item {
-                item_id = data.item_id,
-                user_id = data.user_id,
-                board_id = data.board_id,
-                title = data.title,
-                description = data.description,
-                status = data.status,
-                created_date = data.created_date,
-                due_date = data.due_date,
-            };
         }
     }
 
@@ -101,21 +88,4 @@ namespace Todo.Api.Controllers
         public string status { get; init; }
         public DateTime? due_date { get; init; }
     }
-
-    public record Item
-    {
-        public Guid item_id { get; init; }
-        public string user_id { get; init; }
-        public string board_id { get; init; }
-        public string title { get; init; }
-        public string description { get; init; }
-        public string status { get; init; }
-        public DateTime created_date { get; init; }
-        public DateTime? due_date { get; init; }
-    }
-
-    public record ItemCollection
-    {
-        public Item[] items { get; init; }
-    };
 }

@@ -28,5 +28,16 @@ namespace Todo.Tests
 
             Assert.Equal(2, items.Count);
         }
+
+        [Fact]
+        public async Task GetByUserId_BoardIdNull_DueDateAscending()
+        {
+            var userId = ItemsRepository.DefaultUserId;
+            var repository = new ItemsRepository();
+
+            var items = await repository.GetByUserId(userId, null);
+
+            Assert.Equal(3, items.Count);
+        }
     }
 }
