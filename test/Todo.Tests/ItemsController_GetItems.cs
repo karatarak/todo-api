@@ -13,8 +13,8 @@ namespace Todo.Tests
         [Fact]
         public async Task GetItems_Empty()
         {
-            var userId = "john";
-            var boardId = "shopping";
+            var userId = Guid.NewGuid();
+            var boardId = Guid.NewGuid();
 
             var repository = new Mock<IItemRepository>();
             repository.Setup(r => r.GetByBoardId(userId, boardId)).Returns(Task.FromResult((IEnumerable<ItemData>) new ItemData[0]));
