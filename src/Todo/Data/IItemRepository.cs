@@ -6,14 +6,14 @@ namespace Todo.Data
 {
     public interface IItemRepository
     {
-        Task<ItemData> GetById(Guid itemId);
+        Task<ItemData> GetItemById(Guid itemId);
 
-        Task<IEnumerable<ItemData>> GetByBoardId(Guid userId, Guid boardId);
+        Task<IList<ItemData>> GetItemsByUserId(Guid userId);
 
-        Task<ItemData> Insert(string userId, string boardId, string title, string description, string status, DateTime? dueDate);
+        Task<ItemData> CreateItem(Guid userId, Guid boardId, string title, string description, string status, DateTime? dueDate);
         
-        Task<bool> Update(string itemId, string boardId, string title, string description, string status, DateTime? dueDate);
+        Task<bool> UpdateItem(Guid itemId, string title, string description, string status, DateTime? dueDate);
         
-        Task<bool> Delete(string itemId);
+        Task<bool> DeleteItem(Guid itemId);
     }
 }

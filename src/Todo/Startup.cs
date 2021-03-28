@@ -30,7 +30,7 @@ namespace Todo
 
             services.AddSingleton<IItemRepository>(provider => 
                 {
-                    return new ItemDbRepository(connectionString);
+                    return new ItemPostgresRepository(connectionString);
                 });
 
             services.AddControllers()

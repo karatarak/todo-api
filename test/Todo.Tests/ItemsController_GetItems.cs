@@ -14,14 +14,13 @@ namespace Todo.Tests
         public async Task GetItems_Empty()
         {
             var userId = Guid.NewGuid();
-            var boardId = Guid.NewGuid();
 
             var repository = new Mock<IItemRepository>();
-            repository.Setup(r => r.GetByBoardId(userId, boardId)).Returns(Task.FromResult((IEnumerable<ItemData>) new ItemData[0]));
+            repository.Setup(r => r.GetItemsByUserId(userId)).Returns(Task.FromResult((IList<ItemData>) new List<ItemData>()));
 
             var controller = new ItemsController(repository.Object);
 
-            var response = await controller.GetItems(userId, boardId);
+            var response = await controller.GetItems(userId);
 
             Assert.Empty(response.items);
         }

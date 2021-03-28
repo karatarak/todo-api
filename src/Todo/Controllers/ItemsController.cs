@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Todo.Data;
-using Todo.Model;
+using Todo.Controllers.Model;
 
 namespace Todo.Controllers
 {
@@ -24,7 +22,7 @@ namespace Todo.Controllers
         [HttpPost]
         public async Task<Item> CreateItem(ItemPost body)
         {
-            var item = await _itemsRepository.Insert(
+            var item = await _itemsRepository.CreateItem(
                 body.user_id,
                 body.board_id,
                 body.title,
@@ -35,22 +33,27 @@ namespace Todo.Controllers
             return Item.FromData(item);
         }
 
-        [HttpPut("{item_id}")]
-        public async Task UpdateItem(string item_id, ItemPut body)
+        [HttpPut("{item_id:guid}")]
+        public async Task UpdateItem(Guid item_id, ItemPut body)
         {
-            await _itemsRepository.Update(
+            await _itemsRepository.UpdateItem(
                 item_id,
-                body.board_id,
                 body.title,
                 body.description,
                 body.status,
                 body.due_date);
         }
 
+        [HttpDelete("{item_id:guid}")]
+        public async Task DeleteItem(Guid item_id)
+        {
+            await _itemsRepository.DeleteItem(item_id);
+        }
+
         [HttpGet("{item_id:guid}")]
         public async Task<ActionResult<Item>> GetItemById(Guid item_id)
         {
-            var item = await _itemsRepository.GetById(item_id);
+            var item = await _itemsRepository.GetItemById(item_id);
             if (item == null) {
                 return NotFound();
             }
@@ -59,30 +62,24 @@ namespace Todo.Controllers
         }
 
         [HttpGet]
-        public async Task<ItemCollection> GetItems([FromQuery] Guid user_id, [FromQuery] Guid board_id)
+        public async Task<ItemCollection> GetItems([FromQuery] Guid user_id)
         {
-            var items = await _itemsRepository.GetByBoardId(user_id, board_id);
+            var items = await _itemsRepository.GetItemsByUserId(user_id);
             
             return new ItemCollection {
                 items = items.Select(Item.FromData).ToArray()
             };
         }
-
-        [HttpDelete("{item_id}")]
-        public async Task DeleteItem(string item_id)
-        {
-            await _itemsRepository.Delete(item_id);
-        }
     }
 
     public record ItemPost : ItemPut
     {
-        public string user_id { get; init; }
+        public Guid user_id { get; init; }
+        public Guid board_id { get; init; }
     }
 
     public record ItemPut
     {
-        public string board_id { get; init; }
         public string title { get; init; }
         public string description { get; init; }
         public string status { get; init; }
