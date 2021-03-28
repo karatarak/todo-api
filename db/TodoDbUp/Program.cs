@@ -11,13 +11,13 @@ namespace TodoDbUp
         {
             var connectionString = 
                 args.FirstOrDefault() ?? 
-                "Server=localhost;Port=3306;Database=todo;Uid=root;Pwd=mypassword;";
+                "Host=localhost;Port=5432;Database=todo;Username=admin;Password=mypassword;";
 
-            EnsureDatabase.For.MySqlDatabase(connectionString);
+            EnsureDatabase.For.PostgresqlDatabase(connectionString);
 
             var upgrader =
                 DeployChanges.To
-                    .MySqlDatabase(connectionString)
+                    .PostgresqlDatabase(connectionString)
                     .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
                     .LogToConsole()
                     .Build();

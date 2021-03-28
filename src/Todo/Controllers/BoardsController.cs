@@ -20,7 +20,7 @@ namespace Todo.Controllers
         }
 
         [HttpGet("{board_id}")]
-        public async Task<Board> GetBoardById(string board_id, [FromQuery] string user_id)
+        public async Task<Board> GetBoardById(Guid board_id, [FromQuery] Guid user_id)
         {
             var items = await _itemsRepository.GetByBoardId(user_id, board_id);
             return Board.FromData(user_id, board_id, items);

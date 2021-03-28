@@ -6,9 +6,9 @@ namespace Todo.Data
 {
     public interface IItemRepository
     {
-        Task<ItemData> GetById(string itemId);
+        Task<ItemData> GetById(Guid itemId);
 
-        Task<IEnumerable<ItemData>> GetByBoardId(string userId, string boardId);
+        Task<IEnumerable<ItemData>> GetByBoardId(Guid userId, Guid boardId);
 
         Task<ItemData> Insert(string userId, string boardId, string title, string description, string status, DateTime? dueDate);
         

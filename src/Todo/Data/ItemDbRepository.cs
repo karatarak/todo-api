@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
-using MySql.Data.MySqlClient;
+using Npgsql;
 using Todo.Data.Handlers;
 
 namespace Todo.Data
@@ -14,7 +14,6 @@ namespace Todo.Data
 
         static ItemDbRepository()
         {
-            SqlMapper.AddTypeHandler(new BinaryIdHandler());
             SqlMapper.AddTypeHandler(new DateTimeHandler());
         }
 
@@ -23,32 +22,32 @@ namespace Todo.Data
            _connectionString = connectionString;
         }
 
-        public async Task<ItemData> GetById(string itemId)
+        public async Task<ItemData> GetById(Guid itemId)
         {
-            using (var conn = new MySqlConnection(_connectionString))
+            using (var conn = new NpgsqlConnection(_connectionString))
             {
-                var query = "SELECT * FROM `todo`.`item` WHERE `item_id` = @Id;";
-                var data = new { Id = new BinaryId(itemId) };
+                var query = "SELECT * FROM items WHERE item_id = @item_id;";
+                var data = new { item_id = itemId };
                 return await conn.QueryFirstOrDefaultAsync<ItemData>(query, data);
             }
         }
 
-        public async Task<IEnumerable<ItemData>> GetByUserId(string userId)
+        public async Task<IEnumerable<ItemData>> GetByUserId(Guid userId)
         {
-            using (var conn = new MySqlConnection(_connectionString))
+            using (var conn = new NpgsqlConnection(_connectionString))
             {
-                var query = "SELECT * FROM `todo`.`item` WHERE 'owner_id' = @UserId ORDER BY `created_date`;";
-                var data = new { UserId = new BinaryId(userId) };
+                var query = "SELECT * FROM items WHERE owner_id = @OwnerId ORDER BY created_date;";
+                var data = new { OwnerId = userId };
                 return await conn.QueryAsync<ItemData>(query, data);
             }
         }
 
-        public async Task<IEnumerable<ItemData>> GetByBoardId(string userId, string boardId)
+        public async Task<IEnumerable<ItemData>> GetByBoardId(Guid userId, Guid boardId)
         {
-            using (var conn = new MySqlConnection(_connectionString))
+            using (var conn = new NpgsqlConnection(_connectionString))
             {
-                var query = "SELECT * FROM `todo`.`item` WHERE `owner_id` = @OwnerId AND `board_id` = @BoardId ORDER BY `created_date`;";
-                var data = new { OwnerId = new BinaryId(userId), BoardId = new BinaryId(boardId) };
+                var query = "SELECT * FROM items WHERE owner_id = @OwnerId AND board_id = @BoardId ORDER BY created_date;";
+                var data = new { OwnerId = userId, BoardId = boardId };
                 return await conn.QueryAsync<ItemData>(query, data);
             }
         }

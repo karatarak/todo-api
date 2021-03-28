@@ -11,18 +11,19 @@ services:
     depends_on:
       - db
     environment:
-      - "MYSQL_CONNECTION_STRING=Server=db;Port=3306;Database=todo;Uid=root;Pwd=mypassword;"
+      - "POSTGRES_CONNECTION_STRING=Host=db;Port=5432;Database=todo;Username=admin;Password=mypassword;"
   
   db:
-    image: mysql:5.7.25
+    image: postgres:12.6
     restart: unless-stopped
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - "dbdata:/var/lib/mysql"
+      - "dbdata:/var/lib/postgresql/data"
     environment:
-      - "MYSQL_DATABASE=todo"
-      - "MYSQL_ROOT_PASSWORD=mypassword"
+      - "POSTGRES_USER=admin"
+      - "POSTGRES_PASSWORD=mypassword"
+      - "POSTGRES_DB=todo"
   
 volumes:
   

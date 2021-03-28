@@ -7,11 +7,11 @@ namespace Todo.Model
 { 
     public record Board
     {
-        public string user_id { get; init; }
-        public string board_id { get; init; }
+        public Guid user_id { get; init; }
+        public Guid board_id { get; init; }
         public BoardColumn[] columns { get; init; }
 
-        public static Board FromData(string userId, string boardId, IEnumerable<ItemData> items)
+        public static Board FromData(Guid userId, Guid boardId, IEnumerable<ItemData> items)
         {
             var columns = new List<BoardColumn>();
 

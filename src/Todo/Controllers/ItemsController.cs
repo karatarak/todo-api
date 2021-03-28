@@ -47,8 +47,8 @@ namespace Todo.Controllers
                 body.due_date);
         }
 
-        [HttpGet("{item_id}")]
-        public async Task<ActionResult<Item>> GetItemById(string item_id)
+        [HttpGet("{item_id:guid}")]
+        public async Task<ActionResult<Item>> GetItemById(Guid item_id)
         {
             var item = await _itemsRepository.GetById(item_id);
             if (item == null) {
@@ -59,7 +59,7 @@ namespace Todo.Controllers
         }
 
         [HttpGet]
-        public async Task<ItemCollection> GetItems([FromQuery] string user_id, [FromQuery] string board_id)
+        public async Task<ItemCollection> GetItems([FromQuery] Guid user_id, [FromQuery] Guid board_id)
         {
             var items = await _itemsRepository.GetByBoardId(user_id, board_id);
             
