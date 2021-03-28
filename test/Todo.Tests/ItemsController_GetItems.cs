@@ -8,10 +8,10 @@ using Xunit;
 
 namespace Todo.Tests
 {
-    public class ItemsRepository_GetItems
+    public class ItemsController_GetItems
     {
         [Fact]
-        public async Task GetByUserId_BoardIdNull_Returns8()
+        public async Task GetItems_Empty()
         {
             var userId = Guid.NewGuid();
             var boardId = Guid.NewGuid();
