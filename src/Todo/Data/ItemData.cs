@@ -7,6 +7,7 @@ namespace Todo.Data
         public Guid item_id { get; set; }
         public Guid owner_id { get; set; }
         public Guid board_id { get; set; }
+        public string board_title { get; set; }
         public string title { get; set; }
         public string description { get; set; }
         public string status { get; set; }

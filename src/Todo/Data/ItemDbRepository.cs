@@ -36,7 +36,7 @@ namespace Todo.Data
         {
             using (var conn = new NpgsqlConnection(_connectionString))
             {
-                var query = "SELECT * FROM items WHERE owner_id = @OwnerId ORDER BY created_date;";
+                var query = "SELECT b.title AS board_title, i.* FROM items AS i JOIN boards AS b ON b.board_id = i.board_id WHERE i.owner_id = @OwnerId ORDER BY i.created_date;";
                 var data = new { OwnerId = userId };
                 return await conn.QueryAsync<ItemData>(query, data);
             }
@@ -46,7 +46,7 @@ namespace Todo.Data
         {
             using (var conn = new NpgsqlConnection(_connectionString))
             {
-                var query = "SELECT * FROM items WHERE owner_id = @OwnerId AND board_id = @BoardId ORDER BY created_date;";
+                var query = "SELECT b.title AS board_title, i.* FROM items AS i JOIN boards AS b ON b.board_id = i.board_id WHERE b.owner_id = @OwnerId AND b.board_id = @BoardId ORDER BY i.created_date;";
                 var data = new { OwnerId = userId, BoardId = boardId };
                 return await conn.QueryAsync<ItemData>(query, data);
             }

@@ -8,6 +8,7 @@ namespace Todo.Model
         public Guid item_id { get; init; }
         public Guid owner_id { get; init; }
         public Guid board_id { get; init; }
+        public string board_title { get; init; }
         public string title { get; init; }
         public string description { get; init; }
         public string status { get; init; }
@@ -20,6 +21,7 @@ namespace Todo.Model
                 item_id = data.item_id,
                 owner_id = data.owner_id,
                 board_id = data.board_id,
+                board_title = data.board_title,
                 title = data.title,
                 description = data.description,
                 status = data.status,
