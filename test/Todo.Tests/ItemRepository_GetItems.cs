@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Moq;
+using Todo.Controllers;
 using Todo.Data;
 using Xunit;
 
@@ -10,34 +13,17 @@ namespace Todo.Tests
         [Fact]
         public async Task GetByUserId_BoardIdNull_Returns8()
         {
-            var userId = ItemsRepository.DefaultUserId;
-            var repository = new ItemsRepository();
+            var userId = Guid.NewGuid();
+            var boardId = Guid.NewGuid();
 
-            var items = await repository.GetByUserId(userId, null);
+            var repository = new Mock<IItemRepository>();
+            repository.Setup(r => r.GetByBoardId(userId, boardId)).Returns(Task.FromResult((IEnumerable<ItemData>) new ItemData[0]));
 
-            Assert.Equal(8, items.Count);
-        }
+            var controller = new ItemsController(repository.Object);
 
-        [Fact]
-        public async Task GetByUserId_BoardIdDefault_Returns3()
-        {
-            var userId = ItemsRepository.DefaultUserId;
-            var repository = new ItemsRepository();
+            var response = await controller.GetItems(userId, boardId);
 
-            var items = await repository.GetByUserId(userId, ItemsRepository.DefaultBoardId);
-
-            Assert.Equal(3, items.Count);
-        }
-
-        [Fact]
-        public async Task GetByUserId_BoardIdNull_DueDateAscending()
-        {
-            var userId = ItemsRepository.DefaultUserId;
-            var repository = new ItemsRepository();
-
-            var items = await repository.GetByUserId(userId, null);
-
-            Assert.True(items[0].due_date < items[1].due_date);
+            Assert.Empty(response.items);
         }
     }
 }

@@ -26,9 +26,11 @@ namespace Todo
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IItemsRepository>(provider => 
+            var connectionString = Configuration["MYSQL_CONNECTION_STRING"] ?? Configuration["ConnectionStrings:Default"];
+
+            services.AddSingleton<IItemRepository>(provider => 
                 {
-                    return new ItemsRepository();
+                    return new ItemDbRepository(connectionString);
                 });
 
             services.AddControllers()

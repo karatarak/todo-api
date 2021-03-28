@@ -12,17 +12,17 @@ namespace Todo.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public class BoardsController : ControllerBase
     {
-        private readonly IItemsRepository _itemsRepository;
+        private readonly IItemRepository _itemsRepository;
 
-        public BoardsController(IItemsRepository itemsRepository)
+        public BoardsController(IItemRepository itemsRepository)
         {
             _itemsRepository = itemsRepository;
         }
 
-        [HttpGet("{board_id}")]
-        public async Task<Board> GetBoardById(string board_id, [FromQuery] string user_id)
+        [HttpGet("{board_id:guid}")]
+        public async Task<Board> GetBoardById(Guid board_id, [FromQuery] Guid user_id)
         {
-            var items = await _itemsRepository.GetByUserId(user_id, board_id);
+            var items = await _itemsRepository.GetByBoardId(user_id, board_id);
             return Board.FromData(user_id, board_id, items);
         }
     }

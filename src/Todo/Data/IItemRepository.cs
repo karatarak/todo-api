@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace Todo.Data
 {
-    public interface IItemsRepository
+    public interface IItemRepository
     {
         Task<ItemData> GetById(Guid itemId);
 
-        Task<IList<ItemData>> GetByUserId(string userId, string boardId);
+        Task<IEnumerable<ItemData>> GetByBoardId(Guid userId, Guid boardId);
 
         Task<ItemData> Insert(string userId, string boardId, string title, string description, string status, DateTime? dueDate);
         

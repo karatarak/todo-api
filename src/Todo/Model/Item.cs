@@ -5,8 +5,8 @@ namespace Todo.Model
 {   
     public record Item
     {
-        public Guid item_id { get; init; }
-        public string user_id { get; init; }
+        public string item_id { get; init; }
+        public string owner_id { get; init; }
         public string board_id { get; init; }
         public string title { get; init; }
         public string description { get; init; }
@@ -17,9 +17,9 @@ namespace Todo.Model
         public static Item FromData(ItemData data)
         {
             return new Item {
-                item_id = data.item_id,
-                user_id = data.user_id,
-                board_id = data.board_id,
+                item_id = data.item_id.ToString(),
+                owner_id = data.owner_id.ToString(),
+                board_id = data.board_id.ToString(),
                 title = data.title,
                 description = data.description,
                 status = data.status,

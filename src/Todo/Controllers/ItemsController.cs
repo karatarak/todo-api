@@ -14,9 +14,9 @@ namespace Todo.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public class ItemsController : ControllerBase
     {
-        private readonly IItemsRepository _itemsRepository;
+        private readonly IItemRepository _itemsRepository;
 
-        public ItemsController(IItemsRepository itemsRepository)
+        public ItemsController(IItemRepository itemsRepository)
         {
             _itemsRepository = itemsRepository;
         }
@@ -59,9 +59,9 @@ namespace Todo.Controllers
         }
 
         [HttpGet]
-        public async Task<ItemCollection> GetItems([FromQuery] string user_id, [FromQuery] string board_id)
+        public async Task<ItemCollection> GetItems([FromQuery] Guid user_id, [FromQuery] Guid board_id)
         {
-            var items = await _itemsRepository.GetByUserId(user_id, board_id);
+            var items = await _itemsRepository.GetByBoardId(user_id, board_id);
             
             return new ItemCollection {
                 items = items.Select(Item.FromData).ToArray()

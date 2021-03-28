@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Todo.Data;
@@ -10,7 +11,7 @@ namespace Todo.Model
         public string board_id { get; init; }
         public BoardColumn[] columns { get; init; }
 
-        public static Board FromData(string userId, string boardId, IList<ItemData> items)
+        public static Board FromData(Guid userId, Guid boardId, IEnumerable<ItemData> items)
         {
             var columns = new List<BoardColumn>();
 
@@ -26,8 +27,8 @@ namespace Todo.Model
             }
 
             return new Board {
-                user_id = userId,
-                board_id = boardId,
+                user_id = userId.ToString("N"),
+                board_id = boardId.ToString("N"),
                 columns = columns.ToArray()
             };
         }
