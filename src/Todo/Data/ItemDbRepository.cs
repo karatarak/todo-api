@@ -14,8 +14,8 @@ namespace Todo.Data
 
         static ItemDbRepository()
         {
+            SqlMapper.AddTypeHandler(new BinaryIdHandler());
             SqlMapper.AddTypeHandler(new DateTimeHandler());
-            SqlMapper.AddTypeHandler(new UuidHandler());
         }
 
         public ItemDbRepository(string connectionString)
@@ -23,33 +23,32 @@ namespace Todo.Data
            _connectionString = connectionString;
         }
 
-        public async Task<ItemData> GetById(Guid itemId)
+        public async Task<ItemData> GetById(string itemId)
         {
             using (var conn = new MySqlConnection(_connectionString))
             {
                 var query = "SELECT * FROM `todo`.`item` WHERE `item_id` = @Id;";
-                var data = new { Id = new Uuid(itemId) };
+                var data = new { Id = new BinaryId(itemId) };
                 return await conn.QueryFirstOrDefaultAsync<ItemData>(query, data);
             }
         }
 
-        public async Task<IEnumerable<ItemData>> GetByUserId(Guid userId)
+        public async Task<IEnumerable<ItemData>> GetByUserId(string userId)
         {
             using (var conn = new MySqlConnection(_connectionString))
             {
                 var query = "SELECT * FROM `todo`.`item` WHERE 'owner_id' = @UserId ORDER BY `created_date`;";
-                var data = new { UserId = new Uuid(userId) };
+                var data = new { UserId = new BinaryId(userId) };
                 return await conn.QueryAsync<ItemData>(query, data);
             }
         }
 
-        public async Task<IEnumerable<ItemData>> GetByBoardId(Guid userId, Guid boardId)
+        public async Task<IEnumerable<ItemData>> GetByBoardId(string userId, string boardId)
         {
             using (var conn = new MySqlConnection(_connectionString))
             {
-                //var query = "SELECT * FROM `todo`.`item` WHERE `owner_id` = @UserId AND `board_id` = @BoardId ORDER BY `created_date`;";
-                var query = "SELECT * FROM `todo`.`item` ORDER BY `created_date`;";
-                var data = new { UserId = new Uuid(userId), BoardId = new Uuid(boardId) };
+                var query = "SELECT * FROM `todo`.`item` WHERE `owner_id` = @OwnerId AND `board_id` = @BoardId ORDER BY `created_date`;";
+                var data = new { OwnerId = new BinaryId(userId), BoardId = new BinaryId(boardId) };
                 return await conn.QueryAsync<ItemData>(query, data);
             }
         }
@@ -59,12 +58,12 @@ namespace Todo.Data
             throw new NotImplementedException();
         }
 
-        public Task<bool> Update(Guid itemId, string boardId, string title, string description, string status, DateTime? dueDate)
+        public Task<bool> Update(string itemId, string boardId, string title, string description, string status, DateTime? dueDate)
         {
             throw new NotImplementedException();
         }
         
-        public Task<bool> Delete(Guid itemId)
+        public Task<bool> Delete(string itemId)
         {
             throw new NotImplementedException();
         }

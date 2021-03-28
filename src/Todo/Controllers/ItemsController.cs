@@ -35,8 +35,8 @@ namespace Todo.Controllers
             return Item.FromData(item);
         }
 
-        [HttpPut("{item_id:guid}")]
-        public async Task UpdateItem(Guid item_id, ItemPut body)
+        [HttpPut("{item_id}")]
+        public async Task UpdateItem(string item_id, ItemPut body)
         {
             await _itemsRepository.Update(
                 item_id,
@@ -47,8 +47,8 @@ namespace Todo.Controllers
                 body.due_date);
         }
 
-        [HttpGet("{item_id:guid}")]
-        public async Task<ActionResult<Item>> GetItemById(Guid item_id)
+        [HttpGet("{item_id}")]
+        public async Task<ActionResult<Item>> GetItemById(string item_id)
         {
             var item = await _itemsRepository.GetById(item_id);
             if (item == null) {
@@ -59,7 +59,7 @@ namespace Todo.Controllers
         }
 
         [HttpGet]
-        public async Task<ItemCollection> GetItems([FromQuery] Guid user_id, [FromQuery] Guid board_id)
+        public async Task<ItemCollection> GetItems([FromQuery] string user_id, [FromQuery] string board_id)
         {
             var items = await _itemsRepository.GetByBoardId(user_id, board_id);
             
@@ -68,8 +68,8 @@ namespace Todo.Controllers
             };
         }
 
-        [HttpDelete("{item_id:guid}")]
-        public async Task DeleteItem(Guid item_id)
+        [HttpDelete("{item_id}")]
+        public async Task DeleteItem(string item_id)
         {
             await _itemsRepository.Delete(item_id);
         }

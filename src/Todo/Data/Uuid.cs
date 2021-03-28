@@ -2,26 +2,26 @@ using System;
 
 namespace Todo.Data
 {
-    public class Uuid
+    public class BinaryId
     {
         public Guid Id { get; }
 
-        public Uuid()
+        public BinaryId()
         {
             Id = Guid.NewGuid();
         }
         
-        public Uuid(Guid id)
+        public BinaryId(Guid id)
         {
             Id = id;
         }
 
-        public Uuid(string id)
+        public BinaryId(string id)
         {
             Id = new Guid(id);
         }
 
-        public Uuid(byte[] id)
+        public BinaryId(byte[] id)
         {
             Id = new Guid(id);
         }
