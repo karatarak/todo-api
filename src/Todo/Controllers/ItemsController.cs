@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Data;
 using Todo.Controllers.Model;
+using System.ComponentModel.DataAnnotations;
+using Todo.Controllers.Validation;
 
 namespace Todo.Controllers
 {
@@ -72,13 +74,20 @@ namespace Todo.Controllers
         }
     }
 
-    public record ItemPost : ItemPut
+    public class ItemPost
     {
+        [NotEmpty]
         public Guid user_id { get; init; }
+        [NotEmpty]
         public Guid board_id { get; init; }
+        [Required]
+        public string title { get; init; }
+        public string description { get; init; }
+        public string status { get; init; }
+        public DateTime? due_date { get; init; }
     }
 
-    public record ItemPut
+    public class ItemPut
     {
         public string title { get; init; }
         public string description { get; init; }

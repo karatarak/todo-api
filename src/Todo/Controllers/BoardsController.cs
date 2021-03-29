@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Data;
 using Todo.Controllers.Model;
+using Todo.Controllers.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Todo.Controllers
 {
@@ -58,11 +60,13 @@ namespace Todo.Controllers
 
     public class BoardPost : BoardPut
     {
+        [NotEmpty]
         public Guid user_id { get; init; }
     }
 
     public class BoardPut
     {
+        [Required]
         public string title { get; init; }
     }
 }
