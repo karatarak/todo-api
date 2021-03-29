@@ -8,11 +8,6 @@ namespace Todo.Data
         public Guid owner_id { get; set; }
         public string title { get; set; }
         public DateTime created_date { get; set; }
-    }
-
-    public class BoardItemsData
-    {
-        public BoardData board { get; set; }
-        public ItemData[] items { get; set; }
+        public ItemData[] items { get; set; } = new ItemData[0];
     }
 }

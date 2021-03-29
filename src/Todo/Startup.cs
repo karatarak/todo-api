@@ -28,6 +28,11 @@ namespace Todo
         {
             var connectionString = Configuration["POSTGRES_CONNECTION_STRING"] ?? Configuration["ConnectionStrings:Default"];
 
+            services.AddSingleton<IBoardRepository>(provider => 
+                {
+                    return new BoardPostgresRepository(connectionString);
+                });
+
             services.AddSingleton<IItemRepository>(provider => 
                 {
                     return new ItemPostgresRepository(connectionString);

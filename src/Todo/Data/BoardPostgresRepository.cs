@@ -71,16 +71,6 @@ namespace Todo.Data
         {
             using (var c = new NpgsqlConnection(_connectionString))
             {
-                var query = "SELECT * FROM boards WHERE board_id = @board_id;";
-
-                return await c.QueryFirstOrDefaultAsync<BoardData>(query, new { board_id = boardId });
-            }
-        }
-
-        public async Task<BoardItemsData> GetBoardItemsById(Guid boardId)
-        {
-            using (var c = new NpgsqlConnection(_connectionString))
-            {
                 var query1 = @"SELECT * FROM boards WHERE board_id = @board_id;";
 
                 var query2 = @"
@@ -93,11 +83,35 @@ namespace Todo.Data
                     var board = await m.ReadSingleAsync<BoardData>();
                     var items = await m.ReadAsync<ItemData>();
 
-                    return new BoardItemsData
+                    board.items = items.ToArray();
+                    
+                    return board;
+                }
+            }
+        }
+
+        public async Task<IList<BoardData>> GetBoardsByUserId(Guid userId)
+        {
+            using (var c = new NpgsqlConnection(_connectionString))
+            {
+                var query1 = @"SELECT * FROM boards WHERE owner_id = @owner_id;";
+
+                var query2 = @"
+                    SELECT * FROM items
+                    WHERE owner_id = @owner_id
+                    ORDER BY created_date;";
+   
+                using (var m = await c.QueryMultipleAsync($"{query1} {query2}", new { owner_id = userId }))
+                {
+                    var boards = (await m.ReadAsync<BoardData>()).ToList();
+                    var items = (await m.ReadAsync<ItemData>()).ToList();
+
+                    foreach (var board in boards)
                     {
-                        board = board,
-                        items = items.ToArray(),
-                    };
+                        board.items = items.Where(x => x.board_id == board.board_id).ToArray();
+                    }
+                    
+                    return boards;
                 }
             }
         }

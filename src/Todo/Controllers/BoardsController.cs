@@ -23,7 +23,7 @@ namespace Todo.Controllers
         public async Task<Board> CreateBoard(BoardPost body)
         {
             var board = await _boardRepository.CreateBoard(body.user_id, body.title);
-            return Board.FromData(new BoardItemsData { board = board, items = new ItemData[0] });
+            return Board.FromData(board);
         }
 
         [HttpPut("{board_id:guid}")]
@@ -41,17 +41,27 @@ namespace Todo.Controllers
         [HttpGet("{board_id}")]
         public async Task<Board> GetBoardById(Guid board_id)
         {
-            var boardItems = await _boardRepository.GetBoardItemsById(board_id);
+            var boardItems = await _boardRepository.GetBoardById(board_id);
             return Board.FromData(boardItems);
+        }
+
+        [HttpGet]
+        public async Task<BoardCollection> GetBoards([FromQuery] Guid user_id)
+        {
+            var boards = await _boardRepository.GetBoardsByUserId(user_id);
+            
+            return new BoardCollection {
+                boards = boards.Select(Board.FromData).ToArray()
+            };
         }
     }
 
-    public record BoardPost : BoardPut
+    public class BoardPost : BoardPut
     {
         public Guid user_id { get; init; }
     }
 
-    public record BoardPut
+    public class BoardPut
     {
         public string title { get; init; }
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Todo.Data
@@ -7,7 +8,7 @@ namespace Todo.Data
     {
         Task<BoardData> GetBoardById(Guid boardId);
 
-        Task<BoardItemsData> GetBoardItemsById(Guid boardId);
+        Task<IList<BoardData>> GetBoardsByUserId(Guid userId);
 
         Task<BoardData> CreateBoard(Guid userId, string title);
         
