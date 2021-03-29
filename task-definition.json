@@ -25,7 +25,13 @@
                     "awslogs-region": "ca-central-1",
                     "awslogs-stream-prefix": "ecs"
                 }
-            }
+            },
+            "secrets": [
+                {
+                    "name": "POSTGRES_CONNECTION_STRING",
+                    "valueFrom": "arn:aws:ssm:ca-central-1:719671906569:parameter/todo-rds-1-connection-string"
+                }
+            ]
         }
     ],
     "family": "todo-api",

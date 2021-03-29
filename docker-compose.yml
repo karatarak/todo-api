@@ -11,7 +11,7 @@ services:
     depends_on:
       - db
     environment:
-      - "POSTGRES_CONNECTION_STRING=Host=db;Port=5432;Database=todo;Username=admin;Password=mypassword;"
+      - "POSTGRES_CONNECTION_STRING=Host=db;Port=5432;Database=todo;Username=postgres;Password=password;"
   
   db:
     image: postgres:12.6
@@ -21,8 +21,8 @@ services:
     volumes:
       - "dbdata:/var/lib/postgresql/data"
     environment:
-      - "POSTGRES_USER=admin"
-      - "POSTGRES_PASSWORD=mypassword"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=password"
       - "POSTGRES_DB=todo"
   
 volumes:
