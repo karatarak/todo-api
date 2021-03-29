@@ -26,7 +26,9 @@ namespace Todo
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration["POSTGRES_CONNECTION_STRING"] ?? Configuration["ConnectionStrings:Default"];
+            var connectionString = 
+                Configuration["POSTGRES_CONNECTION_STRING"] ?? 
+                Configuration["ConnectionStrings:Default"];
 
             services.AddSingleton<IBoardRepository>(provider => 
                 {
@@ -52,12 +54,16 @@ namespace Todo
                 });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            var connectionString = Configuration["POSTGRES_CONNECTION_STRING"]?.Substring(0, 20);
+
+            logger.LogInformation($"connection_string_prefix={connectionString}");
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Todo v1"));
