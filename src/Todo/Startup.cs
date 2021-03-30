@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Todo.Middleware;
 using Todo.Data;
 
 namespace Todo
@@ -61,12 +62,10 @@ namespace Todo
                 app.UseDeveloperExceptionPage();
             }
             
-            var connectionString = Configuration["POSTGRES_CONNECTION_STRING"]?.Substring(0, 20);
-
-            logger.LogInformation($"connection_string_prefix={connectionString}");
-
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Todo v1"));
+
+            app.UseExceptionHandler(logger);
 
             app.UseRouting();
 
