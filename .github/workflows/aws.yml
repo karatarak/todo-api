@@ -66,10 +66,10 @@ jobs:
       with:
         image-ref: ${{ steps.build-image.outputs.image }}
         format: 'table'
-        exit-code: '1'
+        exit-code: '0'
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL,HIGH'
+        severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
 
     - name: Push image to Amazon ECR
       run: docker push ${{ steps.build-image.outputs.image }}
