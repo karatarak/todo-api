@@ -65,14 +65,17 @@ jobs:
       uses: anchore/scan-action@v2
       with:
         image: ${{ steps.build-image.outputs.image }}
+        severity-cutoff: critical
+        acs-report-enable: true
+
+    - name: grype scan JSON results
+      run: for j in `ls ./anchore-reports/*.json`; do echo "---- ${j} ----"; cat ${j}; echo; done
+
+    - name: Inspect action SARIF report
+      run: cat ${{ steps.scan.outputs.sarif }}
 
     - name: Push image to Amazon ECR
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: todo-api
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      run: docker push ${{ steps.build-image.outputs.image }}
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
