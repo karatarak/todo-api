@@ -61,12 +61,15 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-    - name: Scan image
-      uses: anchore/scan-action@v2
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
       with:
-        image: ${{ steps.build-image.outputs.image }}
-        fail-build: true
-        severity-cutoff: critical
+        image-ref: ${{ steps.build-image.outputs.image }}
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
 
     - name: Push image to Amazon ECR
       run: docker push ${{ steps.build-image.outputs.image }}
